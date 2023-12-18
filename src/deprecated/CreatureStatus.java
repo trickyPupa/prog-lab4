@@ -1,7 +1,5 @@
 package deprecated;
 
-import technical.EntityType;
-
 public enum CreatureStatus implements IStatus {
     ASTONISHMENT("Изумление"),
     ANXIETY("Тревога"),

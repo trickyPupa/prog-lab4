@@ -5,17 +5,6 @@ import technical.*;
 import java.util.Objects;
 
 public class Item extends Statused {
-//    DOOR("Дверь"),
-//    RAILING("Перила"),
-//    TABLE("Стол"),
-//    CHAIR("Стул"),
-//    PAN_WITH_PORRIDGE("Кастрюля с манной кашей"),
-//    SPOON("Ложка"),
-//    BENCH("Скамейка"),
-//    PLATE("Тарелка"),
-//    BOWL("Миска"),
-//    SHOUTS("Крики"),
-//    METHOD("Способ");
 
     public Item (String name, int force){
         super(name, 2, force);
@@ -110,7 +99,7 @@ public class Item extends Statused {
 
     @Override
     public void setStatus(Status st) {
-        if (st.getType() != EntityType.CREATUE && status != Status.DESTROYED && status != Status.BROKEN && status != st) {
+        if (st.getType() != Status.EntityType.CREATUE && status != Status.DESTROYED && status != Status.BROKEN && status != st) {
             System.out.println("Статус " + this.getName() + " изменился на " + st.getLabel());
             status = st;
         }

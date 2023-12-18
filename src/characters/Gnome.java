@@ -157,25 +157,26 @@ public abstract class Gnome extends Statused {
     public boolean do_smth(Action action, Statused target) {
 //        String message;
         if (action.check(force)){
-            //setStatus(action.getEffect());
+//            switch (action.getLabel()){
+//                case "атакует":
+//                    System.out.println(this + " успешно" + action.getStatement() + " " + target.getName());
+//                    target.takeDamage(5 + (int) (Math.random() * (4 + Math.max(force - target.getForce(), 0))));
+//                    break;
+//                case "спрашивает":
+//                    System.out.println(this + action.getStatement() + " у " + target.getName());
+//                    break;
+//                case "лечит":
+//                    System.out.println(this + action.getStatement() + " " + target.getName());
+//                    target.heal();
+//                default:
+//                    System.out.println(this + " успешно" + action.getStatement() + " " + target.getName());
+//            }
+//
+////            System.out.println(message);
+//            target.setStatus(action.getEffect());
 
-            switch (action.getLabel()){
-                case "атакует":
-                    System.out.println(this + " успешно" + action.getStatement() + " " + target.getName());
-                    target.takeDamage(5 + (int) (Math.random() * (4 + Math.max(force - target.getForce(), 0))));
-                    break;
-                case "спрашивает":
-                    System.out.println(this + action.getStatement() + " у " + target.getName());
-                    break;
-                case "лечит":
-                    System.out.println(this + action.getStatement() + " " + target.getName());
-                    target.heal();
-                default:
-                    System.out.println(this + " успешно" + action.getStatement() + " " + target.getName());
-            }
-
-//            System.out.println(message);
-            target.setStatus(action.getEffect());
+            action.getApplyEffect().applyEffect(this, target, action.getEffect());
+            System.out.println(this + " успешно" + action.getStatement() + " " + target.getName());
             return true;
         } else{
             System.out.println(this + " безуспешно" + action.getStatement());
@@ -207,7 +208,7 @@ public abstract class Gnome extends Statused {
 
     @Override
     public void setStatus(Status st) {
-        if (st.getType() != EntityType.ITEM && status != Status.DEAD){
+        if (st.getType() != Status.EntityType.ITEM && status != Status.DEAD){
             if (status == Status.CONFUSED && st == Status.CONFUSED) {
                 takeDamage(1);
             } else if (st == Status.INJURED) {

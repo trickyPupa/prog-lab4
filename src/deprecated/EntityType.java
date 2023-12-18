@@ -1,4 +1,4 @@
-package technical;
+package deprecated;
 
 public enum EntityType {
     CREATUE("живое существо"),

@@ -1,7 +1,5 @@
 package deprecated;
 
-import technical.EntityType;
-
 public enum ItemStatus implements IStatus {
     HOT("Горячий"),
     COLD("Холодный"),

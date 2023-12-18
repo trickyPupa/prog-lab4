@@ -12,24 +12,32 @@ public class Action {
 //    бежит
 //    летит
 
-
     public static final String[] modes = {"оригинально", "смешно", "хорошо", "по-комариному", "приглушенно",
             "внимательно", "лукаво", "тихо", ""};
 
     private final String label;
-    private Status effect;
+    private Status effect = Status.NO;
     private boolean mode = true;
     private long force = 0;
+    private IApplyEffect applyEffect;
 
     public Action(String label){
         this.label = label;
-        this.effect = Status.NO;
     }
     public Action(String label, Status effect, int force, boolean mode){
         this.label = label;
         this.effect = effect;
         this.force = force;
         this.mode = mode;
+    }
+    public Action(String label, IApplyEffect applyEffectMethod){
+        this.label = label;
+        this.applyEffect = applyEffectMethod;
+    }
+    public Action(String label, IApplyEffect applyEffectMethod, Status effect){
+        this.label = label;
+        this.applyEffect = applyEffectMethod;
+        this.effect = effect;
     }
     public void setForce(int f){
         force = f;
@@ -39,6 +47,9 @@ public class Action {
     }
     public Status getEffect(){
         return effect;
+    }
+    public IApplyEffect getApplyEffect(){
+        return applyEffect;
     }
     public void setEffect(Status ef){
         effect = ef;

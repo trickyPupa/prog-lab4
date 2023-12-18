@@ -1,4 +1,4 @@
-package other;
+package deprecated;
 
 import characters.Gnome;
 import technical.Floatable;

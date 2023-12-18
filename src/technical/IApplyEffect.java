@@ -1,6 +1,5 @@
 package technical;
 
-@FunctionalInterface
 public interface IApplyEffect {
-    void applyEffect();
+    void applyEffect(Statused actor, Statused target, Status effect);
 }

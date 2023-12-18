@@ -17,6 +17,23 @@ public enum Status {
     private final String label;
     private final EntityType type;
 
+    public enum EntityType{
+        CREATUE("живое существо"),
+        ITEM("предмет"),
+        NO("любой");
+
+        private String type;
+
+        EntityType(String type){
+            this.type = type;
+        }
+
+        @Override
+        public String toString() {
+            return type;
+        }
+    }
+
     Status(String label, EntityType type){
         this.label = label;
         this.type = type;

@@ -4,6 +4,8 @@ import characters.MainCharacter;
 import other.Item;
 import other.Place;
 import technical.Action;
+import technical.IApplyEffect;
+import technical.Statused;
 import technical.exceptions.DeathException;
 import technical.exceptions.StoryException;
 import technical.Status;
@@ -51,7 +53,8 @@ import technical.Status;
 
 public class Main {
     public static void main(String[] args) {
-        scene2();
+//        scene2();
+        test();
     }
 
     public static void scene2() {
@@ -109,6 +112,25 @@ public class Main {
             System.out.println("Главный герой - " + zn.presentation());
             System.out.println("Конец");
         }
+    }
+
+    public static void test(){
+        MainCharacter znaika = new MainCharacter();
+        SimpleGnome gnome1 = new SimpleGnome("Абобус");
+
+        IApplyEffect attack = (actor, target, effect) -> {
+            target.takeDamage(5 + (int) (Math.random() * (4 + Math.max(actor.getForce() - target.getForce(), 0))));
+        };
+
+        Action act1 = new Action("делает грязь", (actor, target, effect) -> {
+            target.setStatus(effect);
+            System.out.println(actor + "сделал грязь");
+            target.takeDamage(30);
+        });
+        Action act2 = new Action("аттакует", attack);
+
+        znaika.do_smth(act2, gnome1);
+        System.out.println(gnome1.presentation());
     }
 
     /*public static void scene1() {

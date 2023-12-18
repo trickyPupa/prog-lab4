@@ -1,13 +1,13 @@
 package characters;
 
-import other.Legs;
 import other.Place;
-import technical.Action;
 import technical.Status;
-import technical.Statused;
-import technical.exceptions.StoryException;
 
 public class MainCharacter extends Gnome{
+
+    private static class Abob{
+
+    }
     public MainCharacter(){
         super("Знайка", Place.UPPER_FLOOR, 20, 15);
         this.legs = new Legs(30);
@@ -74,8 +74,8 @@ public class MainCharacter extends Gnome{
         System.out.println(this.getName() + " не справился.");
     }
 
-    //    @Override
-//    public String toString() {
-//        return "коротышка по имени " + this.getName() + " со своими ногами";
-//    }
+        @Override
+    public String toString() {
+        return "Главный герой, коротышка по имени " + this.getName();
+    }
 }
