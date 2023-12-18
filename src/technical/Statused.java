@@ -7,6 +7,7 @@ public abstract class Statused implements Floatable, IDoSmth {
     protected int hp;
     protected int force;
     protected String name;
+    public boolean is_floating;
 
     public Statused(String name, int hp, int force){
         this.hp = hp;

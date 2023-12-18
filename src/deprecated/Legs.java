@@ -3,6 +3,7 @@ package deprecated;
 import characters.Gnome;
 import technical.Floatable;
 import technical.Status;
+import technical.Statused;
 
 import java.util.Objects;
 
@@ -26,6 +27,11 @@ public class Legs implements Floatable {
     public void crash() {
         System.out.println(owner + " ударился ногами");
         if (Math.random() < 0.2 + (length * 0.004)) injure();
+    }
+
+    @Override
+    public void crash(Statused into) {
+
     }
 
     @Override

@@ -22,6 +22,12 @@ public class Item extends Statused {
     }
 
     @Override
+    public void crash(Statused into) {
+        System.out.println(this + " врезался в " + into.getName());
+        if (Math.random() < 0.1) takeDamage(1);
+    }
+
+    @Override
     public void floating() {
         System.out.println(this.getName() + " плавает в воздухе");
         if (Math.random() < 0.5) this.flip();
