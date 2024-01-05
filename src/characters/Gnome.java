@@ -8,14 +8,21 @@ import technical.exceptions.StoryException;
 import java.util.Objects;
 
 public abstract class Gnome extends Statused {
-    public static final Action THINK = new Action("думает", Status.CONFUSED, 0, true);
-    public static final Action FLY = new Action("летит", Status.NO, 0, true);
-    public static final Action ASK = new Action("спрашивает", Status.NO, 3, false);
-    public static final Action ATTACK = new Action("атакует", Status.SCARE, 5, false);
+    public static final Action FLY = new Action("летит", (actor, target, effect) -> {
+        if(!actor.is_floating) {
+            System.out.println(actor + " взлетает");
+            actor.floating();
+        }
+        }, Status.NO, 0);
+    public static final Action ATTACK = new Action("атакует", (actor, target, effect) -> {
+        target.takeDamage(5 + (int) (Math.random() * (4 + Math.max(actor.getForce() - target.getForce(), 0))));
+        target.flip();
+        actor.flip();
+    }, Status.SCARE, 5);
     //static final Action OPEN = new Action("открывает", Status.NO, 3, false);
 
     protected Place location;
-    protected boolean is_floating = false;
+    public boolean is_floating = false;
     protected Legs legs;
 
     protected class Legs implements Floatable {
@@ -32,6 +39,12 @@ public abstract class Gnome extends Statused {
         @Override
         public void crash() {
             System.out.println(Gnome.this + " ударился ногами");
+            if (Math.random() < 0.2 + (length * 0.004)) injure();
+        }
+
+        @Override
+        public void crash(Statused into) {
+            System.out.println(Gnome.this + " ударился ногами о " + into.getName());
             if (Math.random() < 0.2 + (length * 0.004)) injure();
         }
 
@@ -83,6 +96,7 @@ public abstract class Gnome extends Statused {
     @Override
     public void flip(){
         System.out.println(this + " переворачивается в воздухе");
+        if (Math.random() < 0.3) this.crash();
     }
 
     public String presentation(){
@@ -128,11 +142,22 @@ public abstract class Gnome extends Statused {
     }
 
     @Override
+    public void crash(Statused into) {
+        is_floating = false;
+        String message = this + " врезается в " + into.getName();
+        if (Math.random() < 0.1) {
+            takeDamage(1);
+            message += " и получает 1 урон";
+        }
+        System.out.println(message);
+    }
+
+    @Override
     public boolean do_smth(Action action) {
         if (action.check(force)){
 //            System.out.println(this + " успешно " + action.getStatement());
 
-            switch (action.getLabel()){
+            /*switch (action.getLabel()){
                 case "думает":
                     System.out.println(this + action.getStatement());
                     break;
@@ -145,10 +170,13 @@ public abstract class Gnome extends Statused {
                 default:
                     System.out.println(this + " успешно" + action.getStatement());
             }
-            setStatus(action.getEffect());
+            setStatus(action.getEffect());*/
+
+            action.getApplyEffect().applyEffect(this, this, action.getEffect());
+//            System.out.println(this + " успешно " + action.getStatement());
             return true;
         } else{
-            System.out.println(this + " безуспешно" + action.getStatement());
+            System.out.println(this + " безуспешно " + action.getStatement());
             return false;
         }
     }
@@ -176,10 +204,10 @@ public abstract class Gnome extends Statused {
 //            target.setStatus(action.getEffect());
 
             action.getApplyEffect().applyEffect(this, target, action.getEffect());
-            System.out.println(this + " успешно" + action.getStatement() + " " + target.getName());
+            System.out.println(this + " успешно " + action.getStatement() + " " + target.getName());
             return true;
         } else{
-            System.out.println(this + " безуспешно" + action.getStatement());
+            System.out.println(this + " безуспешно " + action.getStatement());
             return false;
         }
     }
@@ -201,8 +229,8 @@ public abstract class Gnome extends Statused {
 
     @Override
     public void heal() {
-        hp += 10;
-        force += 5;
+        hp += 5;
+        force += 3;
         if (status == Status.INJURED) setStatus(Status.NO);
     }
 

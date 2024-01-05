@@ -6,4 +6,6 @@ public interface Floatable {
     void flip();
 
     void crash();
+
+    void crash(Statused into);
 }

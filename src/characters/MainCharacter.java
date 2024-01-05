@@ -1,7 +1,10 @@
 package characters;
 
 import other.Place;
+import technical.Action;
+import technical.DefaultEffect;
 import technical.Status;
+import technical.exceptions.DeathException;
 
 public class MainCharacter extends Gnome{
 
@@ -20,7 +23,7 @@ public class MainCharacter extends Gnome{
             System.out.println(this + " двигается из " + this.location.toString() + " в " + loc.toString());
             this.location = loc;
         } else if (Math.random() < 0.4){
-            System.out.println(this + " с трудом перемеш=щается из " + this.location.toString() + " в " + loc.toString());
+            System.out.println(this + " с трудом перемещается из " + this.location.toString() + " в " + loc.toString());
             this.location = loc;
         } else {
             System.out.println(this + " не хватает сил переместиться из " + this.location.toString() + " в " + loc.toString());
@@ -58,7 +61,7 @@ public class MainCharacter extends Gnome{
     }
 
     public void think(){
-        do_smth(THINK);
+        do_smth(new Action("думает", new DefaultEffect()));
     }
 
     @Override

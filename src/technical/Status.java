@@ -9,6 +9,9 @@ public enum Status {
     DESTROYED("Уничтожен", EntityType.ITEM),
     INJURED("Ранен", EntityType.CREATUE),
     SCARE("Страх", EntityType.CREATUE),
+    ELATION("Поднятое настроение", EntityType.CREATUE),
+    DESPAIR("Уныние", EntityType.CREATUE),
+    ANGER("Гнев", EntityType.CREATUE),
     CONFUSED("Озадаченность", EntityType.CREATUE);
 
 //    public static String[] item_statuses = {};
