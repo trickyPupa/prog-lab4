@@ -4,13 +4,8 @@ import other.Place;
 import technical.Action;
 import technical.DefaultEffect;
 import technical.Status;
-import technical.exceptions.DeathException;
 
 public class MainCharacter extends Gnome{
-
-    private static class Abob{
-
-    }
     public MainCharacter(){
         super("Знайка", Place.UPPER_FLOOR, 20, 15);
         this.legs = new Legs(30);

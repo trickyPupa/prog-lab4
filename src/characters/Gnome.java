@@ -3,7 +3,6 @@ package characters;
 import other.Place;
 import technical.*;
 import technical.exceptions.DeathException;
-import technical.exceptions.StoryException;
 
 import java.util.Objects;
 
@@ -70,9 +69,8 @@ public abstract class Gnome extends Statused {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
+            return this == o;
 //            if (o == null || getClass() != o.getClass()) return false;
-            return false;
         }
 
         @Override
@@ -213,7 +211,7 @@ public abstract class Gnome extends Statused {
     }
 
     @Override
-    public void takeDamage(int d) throws DeathException {
+    public void takeDamage(int d) {
         if (d < hp && d > 0){
             hp -= d;
             force -= (int) (d * 0.1);

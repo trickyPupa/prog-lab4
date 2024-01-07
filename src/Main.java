@@ -73,6 +73,23 @@ public class Main {
         };
 
         try {
+            IApplyEffect crash_into_func = new IApplyEffect() {
+                int count = 0;
+                @Override
+                public void applyEffect(Statused actor, Statused target, Status effect) {
+                    if (count > 5) {
+                        System.out.println("Начася сущий ад");
+                    }
+                    else {
+                        actor.crash(target);
+                        target.crash(actor);
+                        count++;
+                    }
+                }
+            };
+            Action crashes_into_action = new Action("врезается в", crash_into_func, Status.ANGER, 4);
+
+
             znaika.do_smth(new Action("почувствовал себя хорошо", feeling_good), true);
 
             znaika.do_smth(Gnome.FLY);
@@ -117,22 +134,15 @@ public class Main {
 
             gnomes[0].do_smth(Gnome.ATTACK, gnomes[1], true);
 
-            Action crashes_into = new Action("врезается в", (actor, target, effect) -> {
-                actor.crash(target);
-                target.crash(actor);
-            }, Status.ANGER, 4);
-            gnomes[0].do_smth(crashes_into, kitchen_items[5], true);
+            gnomes[0].do_smth(crashes_into_action, kitchen_items[5], true);
 
             for (int i = 0; i < gnomes.length; i++){
                 if (Math.random() < 0.3){
-                    gnomes[i].do_smth(crashes_into, gnomes[(i + 1) % gnomes.length]);
+                    gnomes[i].do_smth(crashes_into_action, gnomes[(i + 1) % gnomes.length]);
                 }
             }
 
-            znaika.do_smth(new Action("врезается в", (actor, target, effect) -> {
-                actor.crash(target);
-                actor.takeDamage(5);
-            }, Status.ANGER, 4), kitchen_items[6], true);
+            znaika.do_smth(crashes_into_action, kitchen_items[6], true);
 
             /*zn.do_smth(Gnome.FLY);
             zn.think();
@@ -169,7 +179,8 @@ public class Main {
             zn.move(Place.HALL);*/
 
         } catch (DeathException e){
-            System.out.println("Кто-то умер, продолжать дальше не представляется возможным.");
+            System.out.println(e.getMessage());
+            System.out.println("Продолжать дальше нельзя");
         } catch (StoryException e){
             znaika.fail();
         }
@@ -188,15 +199,38 @@ public class Main {
             target.takeDamage(5 + (int) (Math.random() * (4 + Math.max(actor.getForce() - target.getForce(), 0))));
         };
 
+        IApplyEffect do_shit = new IApplyEffect() {
+            int valuable = 0;
+
+            @Override
+            public void applyEffect(Statused actor, Statused target, Status effect) {
+                if  (valuable == 5){
+                    System.out.println("no more");
+                }
+                else {
+                    valuable++;
+                    System.out.println("пока ничего");
+                    System.out.println("но val = " + valuable);
+                }
+            }
+        };
+
         Action act1 = new Action("делает грязь", (actor, target, effect) -> {
             target.setStatus(effect);
             System.out.println(actor + "сделал грязь");
             target.takeDamage(30);
         });
+
+        Action act3 = new Action("соврешает нечто", do_shit);
         Action act2 = new Action("аттакует", attack);
 
         znaika.do_smth(act2, gnome1);
         System.out.println(gnome1.presentation());
+
+        for(int i =0; i < 5; i++){
+           znaika.do_smth(act3);
+           gnome1.do_smth(act3);
+        }
     }
 
     /*public static void scene1() {

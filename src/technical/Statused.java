@@ -1,7 +1,5 @@
 package technical;
 
-import technical.exceptions.DeathException;
-
 public abstract class Statused implements Floatable, IDoSmth {
     protected Status status = Status.NO;
     protected int hp;
@@ -14,7 +12,7 @@ public abstract class Statused implements Floatable, IDoSmth {
         this.name = name;
         this.force = force;
     }
-    public abstract void takeDamage(int d) throws DeathException;
+    public abstract void takeDamage(int d);
     public abstract void heal();
     public abstract String presentation();
     public Status getStatus(){

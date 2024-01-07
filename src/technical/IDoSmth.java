@@ -8,7 +8,7 @@ public interface IDoSmth {
     default boolean do_smth(Action action, boolean storyImportant) throws StoryException{
         boolean flag = do_smth(action);
         if (storyImportant && !flag){
-            throw new StoryException();
+            throw new StoryException("Сцена прервалась в связи с " + action);
         }
         return flag;
     }
@@ -18,7 +18,7 @@ public interface IDoSmth {
     default boolean do_smth(Action action, Statused target, boolean storyImportant) throws StoryException{
         boolean flag = do_smth(action, target);
         if (storyImportant && !flag){
-            throw new StoryException();
+            throw new StoryException("Сцена прервалась в связи с " + action);
         }
         return flag;
     }
