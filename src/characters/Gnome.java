@@ -18,7 +18,6 @@ public abstract class Gnome extends Statused {
         target.flip();
         actor.flip();
     }, Status.SCARE, 5);
-    //static final Action OPEN = new Action("открывает", Status.NO, 3, false);
 
     protected Place location;
     public boolean is_floating = false;
@@ -153,25 +152,7 @@ public abstract class Gnome extends Statused {
     @Override
     public boolean do_smth(Action action) {
         if (action.check(force)){
-//            System.out.println(this + " успешно " + action.getStatement());
-
-            /*switch (action.getLabel()){
-                case "думает":
-                    System.out.println(this + action.getStatement());
-                    break;
-                case "летит":
-                    if(!is_floating){
-                        System.out.println(this + " взлетает");
-                        floating();
-                        break;
-                    }
-                default:
-                    System.out.println(this + " успешно" + action.getStatement());
-            }
-            setStatus(action.getEffect());*/
-
             action.getApplyEffect().applyEffect(this, this, action.getEffect());
-//            System.out.println(this + " успешно " + action.getStatement());
             return true;
         } else{
             System.out.println(this + " безуспешно " + action.getStatement());
@@ -181,26 +162,7 @@ public abstract class Gnome extends Statused {
 
     @Override
     public boolean do_smth(Action action, Statused target) {
-//        String message;
         if (action.check(force)){
-//            switch (action.getLabel()){
-//                case "атакует":
-//                    System.out.println(this + " успешно" + action.getStatement() + " " + target.getName());
-//                    target.takeDamage(5 + (int) (Math.random() * (4 + Math.max(force - target.getForce(), 0))));
-//                    break;
-//                case "спрашивает":
-//                    System.out.println(this + action.getStatement() + " у " + target.getName());
-//                    break;
-//                case "лечит":
-//                    System.out.println(this + action.getStatement() + " " + target.getName());
-//                    target.heal();
-//                default:
-//                    System.out.println(this + " успешно" + action.getStatement() + " " + target.getName());
-//            }
-//
-////            System.out.println(message);
-//            target.setStatus(action.getEffect());
-
             action.getApplyEffect().applyEffect(this, target, action.getEffect());
             System.out.println(this + " успешно " + action.getStatement() + " " + target.getName());
             return true;

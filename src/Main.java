@@ -55,9 +55,50 @@ public class Main {
     }
 
     public static void scene2() {
+        class GnomesList{
+            public static final String[] gnome_names = {"Незнайка", "Винтик", "Шпунтик", "Сиропчик", "Пончик"};
+            private SimpleGnome[] gnomes;
+
+            public GnomesList(int len){
+                gnomes = new SimpleGnome[len];
+                for (int i = 0; i < len; i++){
+                    gnomes[i] = new SimpleGnome(gnome_names[i % gnome_names.length]);
+                }
+            }
+            public GnomesList(SimpleGnome[] list){
+                gnomes = list;
+            }
+            public SimpleGnome getI(int i) {
+                return gnomes[i];
+            }
+            public void floating(){
+                for (SimpleGnome i : gnomes){
+                    i.floating();
+                }
+            }
+            public void simple_action(String text){
+                for (SimpleGnome i : gnomes){
+                    i.simple_action(text);
+                }
+            }
+            public void chaos(Action action){
+                for (int i = 0; i < gnomes.length; i++){
+                    if (Math.random() < 0.3){
+                        gnomes[i].do_smth(action, gnomes[(i + 1) % gnomes.length]);
+                    }
+                }
+            }
+            public int getLen(){
+                return gnomes.length;
+            }
+        }
+
         MainCharacter znaika = new MainCharacter();
-        SimpleGnome[] gnomes = {new SimpleGnome("Незнайка"), new SimpleGnome("Винтик"),
-                new SimpleGnome("Шпунтик"), new SimpleGnome("Сиропчик"), new SimpleGnome("Пончик")};
+
+        GnomesList gnome_list = new GnomesList(new SimpleGnome[]{new SimpleGnome("Незнайка"),
+                new SimpleGnome("Винтик"), new SimpleGnome("Шпунтик"), new SimpleGnome("Сиропчик"),
+                new SimpleGnome("Пончик")});
+
         Item door = new Item("дверь", 2);
         Item railings = new Item("перила", 2);
         Item[] bedroom_items = {new Item("стул", 0), new Item("Война и мир. том 1", 0),
@@ -89,7 +130,6 @@ public class Main {
             };
             Action crashes_into_action = new Action("врезается в", crash_into_func, Status.ANGER, 4);
 
-
             znaika.do_smth(new Action("почувствовал себя хорошо", feeling_good), true);
 
             znaika.do_smth(Gnome.FLY);
@@ -114,16 +154,14 @@ public class Main {
             znaika.do_smth(new Action("открывает"), door, true);
 
             znaika.move(Place.HALL);
-            for (SimpleGnome i : gnomes){
-                i.simple_action("тревожится");
-            }
+            gnome_list.simple_action("тревожится");
             znaika.do_smth(new Action("открывает"), door, true);
 
             znaika.move(Place.DINING_ROOM);
-            for (SimpleGnome i : gnomes){
-                i.floating();
-                znaika.do_smth(new Action("видит"), i);
-                i.do_smth(new Action("удивляет", new DefaultEffect(), Status.ASTONISHMENT, 2), znaika);
+            for (int i = 0; i < gnome_list.getLen(); i++){
+                gnome_list.getI(i).floating();
+                znaika.do_smth(new Action("видит"), gnome_list.getI(i));
+                gnome_list.getI(i).do_smth(new Action("удивляет", new DefaultEffect(), Status.ASTONISHMENT, 2), znaika);
             }
             for(Item i : kitchen_items){
                 i.floating();
@@ -132,51 +170,13 @@ public class Main {
             Item temp = new Item("молчание", 0);
             temp.simple_action("повисло");
 
-            gnomes[0].do_smth(Gnome.ATTACK, gnomes[1], true);
+            gnome_list.getI(0).do_smth(Gnome.ATTACK, gnome_list.getI(1), true);
 
-            gnomes[0].do_smth(crashes_into_action, kitchen_items[5], true);
+            gnome_list.getI(0).do_smth(crashes_into_action, kitchen_items[5], true);
 
-            for (int i = 0; i < gnomes.length; i++){
-                if (Math.random() < 0.3){
-                    gnomes[i].do_smth(crashes_into_action, gnomes[(i + 1) % gnomes.length]);
-                }
-            }
+            gnome_list.chaos(crashes_into_action);
 
             znaika.do_smth(crashes_into_action, kitchen_items[6], true);
-
-            /*zn.do_smth(Gnome.FLY);
-            zn.think();
-            zn.do_smth(new Action("тянется", Status.NO, railings.getForce(), true), railings);
-
-            zn.move(Place.STAIRS);
-            zn.do_smth(new Action("открывает"), door, true);
-
-            zn.move(Place.HALL);
-            for (SimpleGnome i : gnomes){
-                i.simple_action("тревожится");
-            }
-            zn.do_smth(new Action("открывает"), door, true);
-
-            zn.move(Place.DINING_ROOM);
-            for (SimpleGnome i : gnomes){
-                i.floating();
-                zn.do_smth(new Action("видит"), i);
-                i.do_smth(new Action("удивляет", Status.ASTONISHMENT, 2), zn);
-            }
-            for(Item i : kitchen_items){
-                i.floating();
-            }
-
-            Item temp = new Item("молчание", 0);
-            temp.simple_action("повисло");
-
-            for (SimpleGnome i : gnomes){
-                i.do_smth(Gnome.ATTACK, zn);
-            }
-
-            zn.do_smth(new Action("лечит"), zn);
-            zn.do_smth(new Action("спасается бегством"));
-            zn.move(Place.HALL);*/
 
         } catch (DeathException e){
             System.out.println(e.getMessage());
@@ -232,74 +232,4 @@ public class Main {
            gnome1.do_smth(act3);
         }
     }
-
-    /*public static void scene1() {
-        MainCharacter zn = new MainCharacter();
-
-//        SimpleGnome g1 = new SimpleGnome("Незнайка");
-//        SimpleGnome g2 = new SimpleGnome("Винтик");
-//        SimpleGnome g3 = new SimpleGnome("Сиропчик");
-        SimpleGnome[] gnomes = {new SimpleGnome("Незнайка"), new SimpleGnome("Винтик"), new SimpleGnome("Сиропчик")};
-        Item door = new Item("дверь", 2);
-        Item railings = new Item("перила", 2);
-        Item[] kitchen_items = {new Item("стул", 0), new Item("скамья", 0), new Item("миска", 0),
-                new Item("тарелка", 0), new Item("ложка", 0), new Item("кастрюля с кашей", 0)};
-        boolean flag;
-
-        zn.do_smth(Gnome.FLY);
-        zn.think();
-
-        flag = zn.do_smth(new Action("тянется", Status.NO, railings.getForce(), true), railings);
-
-        if (flag) {
-            zn.move(Place.STAIRS);
-            flag = zn.do_smth(new Action("открывает"), door);
-        } else {
-            zn.fail();
-            return;
-        }
-
-        if (flag) {
-            zn.move(Place.HALL);
-            for (SimpleGnome i : gnomes){
-                i.simple_action("тревожится");
-            }
-            flag = zn.do_smth(new Action("открывает"), door);
-        } else {
-            zn.fail();
-            return;
-        }
-
-        if (flag) {
-            zn.move(Place.DINING_ROOM);
-            for (SimpleGnome i : gnomes){
-                i.floating();
-                zn.do_smth(new Action("видит"), i);
-                i.do_smth(new Action("удивляет", Status.ASTONISHMENT, 2, false), zn);
-            }
-            for(Item i : kitchen_items){
-                i.floating();
-            }
-
-            Item temp = new Item("молчание", 0);
-            temp.simple_action("повисло");
-
-            for (SimpleGnome i : gnomes){
-                i.do_smth(Gnome.ATTACK, zn);
-            }
-            flag = zn.getStatus() != Status.DEAD;
-        } else {
-            zn.fail();
-            return;
-        }
-
-        if (flag){
-            zn.do_smth(new Action("лечит"), zn);
-            zn.do_smth(new Action("спасается бегством"));
-            zn.move(Place.HALL);
-        }
-        System.out.println();
-        System.out.println("Главный герой - " + zn.presentation());
-        System.out.println("Конец");
-    }*/
 }
